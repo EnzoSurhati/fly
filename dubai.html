@@ -1,0 +1,1011 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fly With Me ✈️</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&family=Josefin+Sans:wght@200;300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --gold: #c9a84c;
+        --gold-light: #e8cc7a;
+        --gold-pale: #f5e6b8;
+        --dark: #0a0a0f;
+        --dark2: #12121a;
+        --dark3: #1c1c28;
+        --cream: #f9f3e3;
+        --sand: #d4b896;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        background: var(--dark);
+        color: var(--cream);
+        font-family: "Cormorant Garamond", serif;
+        overflow-x: hidden;
+        cursor: none;
+      }
+
+      /* Custom cursor — airplane */
+      .cursor {
+        font-size: 1.6rem;
+        position: fixed;
+        pointer-events: none;
+        z-index: 9999;
+        transform-origin: center;
+        transition: transform 0.08s ease;
+        filter: drop-shadow(0 0 6px rgba(201, 168, 76, 0.7));
+        user-select: none;
+        line-height: 1;
+      }
+      .cursor-ring {
+        display: none;
+      }
+      *,
+      a,
+      button,
+      .clickable {
+        cursor: none;
+      }
+
+      /* Stars background */
+      #stars-canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* ── HERO ── */
+      #hero {
+        position: relative;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        z-index: 1;
+        overflow: hidden;
+      }
+
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 80% 60% at 50% 100%,
+            rgba(201, 168, 76, 0.18) 0%,
+            transparent 70%
+          ),
+          radial-gradient(
+            ellipse 60% 40% at 30% 80%,
+            rgba(201, 168, 76, 0.08) 0%,
+            transparent 60%
+          );
+      }
+
+      /* Plane flying across */
+      .plane {
+        position: absolute;
+        font-size: 2rem;
+        animation: fly 8s linear infinite;
+        top: 25%;
+        filter: drop-shadow(0 0 8px var(--gold));
+      }
+      @keyframes fly {
+        0% {
+          left: -5%;
+          transform: scaleX(1);
+          opacity: 0;
+        }
+        5% {
+          opacity: 1;
+        }
+        95% {
+          opacity: 1;
+        }
+        100% {
+          left: 105%;
+          transform: scaleX(1);
+          opacity: 0;
+        }
+      }
+
+      .hero-eyebrow {
+        font-family: "Josefin Sans", sans-serif;
+        font-weight: 200;
+        letter-spacing: 0.5em;
+        font-size: 0.75rem;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 1s ease 0.3s both;
+      }
+
+      .hero-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3.5rem, 9vw, 8rem);
+        line-height: 1.05;
+        font-weight: 700;
+        animation: fadeUp 1s ease 0.5s both;
+      }
+
+      .hero-title em {
+        font-style: italic;
+        color: var(--gold-light);
+      }
+
+      .hero-sub {
+        font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+        font-weight: 300;
+        color: var(--sand);
+        margin-top: 1.5rem;
+        letter-spacing: 0.05em;
+        animation: fadeUp 1s ease 0.7s both;
+      }
+
+      .hero-cta {
+        margin-top: 3rem;
+        animation: fadeUp 1s ease 0.9s both;
+      }
+
+      .btn-gold {
+        display: inline-block;
+        padding: 1rem 2.8rem;
+        border: 1px solid var(--gold);
+        color: var(--gold-light);
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.85rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        text-decoration: none;
+        position: relative;
+        overflow: hidden;
+        transition: color 0.4s ease;
+      }
+      .btn-gold::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--gold);
+        transform: translateX(-100%);
+        transition: transform 0.4s ease;
+        z-index: -1;
+      }
+      .btn-gold:hover::before {
+        transform: translateX(0);
+      }
+      .btn-gold:hover {
+        color: var(--dark);
+      }
+
+      .scroll-hint {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        animation:
+          bob 2s ease-in-out infinite,
+          fadeUp 1s ease 1.2s both;
+        font-size: 1.4rem;
+        opacity: 0.5;
+      }
+
+      /* ── SECTIONS ── */
+      section {
+        position: relative;
+        z-index: 1;
+        padding: 6rem 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-label {
+        font-family: "Josefin Sans", sans-serif;
+        font-weight: 200;
+        letter-spacing: 0.5em;
+        font-size: 0.7rem;
+        color: var(--gold);
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+      }
+
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.15;
+      }
+
+      .divider {
+        width: 60px;
+        height: 1px;
+        background: var(--gold);
+        margin: 1.5rem 0;
+      }
+
+      .section-body {
+        font-size: 1.2rem;
+        font-weight: 300;
+        line-height: 1.9;
+        color: var(--sand);
+        max-width: 680px;
+      }
+
+      /* ── DUBAI SECTION ── */
+      #dubai {
+        padding-top: 8rem;
+      }
+
+      .dubai-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+        margin-top: 4rem;
+      }
+
+      .dubai-card {
+        position: relative;
+        overflow: hidden;
+        background: var(--dark3);
+        border: 1px solid rgba(201, 168, 76, 0.15);
+        text-decoration: none;
+        color: inherit;
+        transition:
+          border-color 0.4s ease,
+          transform 0.4s ease;
+        display: block;
+      }
+      .dubai-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-6px);
+      }
+
+      .card-img {
+        width: 100%;
+        height: 220px;
+        object-fit: cover;
+        display: block;
+        filter: saturate(0.6) brightness(0.7);
+        transition: filter 0.5s ease;
+        font-size: 5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--dark2);
+      }
+      .dubai-card:hover .card-img {
+        filter: saturate(1) brightness(0.9);
+      }
+
+      .card-emoji {
+        width: 100%;
+        height: 220px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        background: var(--dark2);
+        transition: transform 0.4s ease;
+      }
+      .dubai-card:hover .card-emoji {
+        transform: scale(1.1);
+      }
+
+      .card-body {
+        padding: 1.5rem;
+      }
+
+      .card-tag {
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 0.4em;
+        color: var(--gold);
+        text-transform: uppercase;
+      }
+
+      .card-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.4rem;
+        margin: 0.4rem 0;
+      }
+
+      .card-desc {
+        font-size: 0.95rem;
+        color: var(--sand);
+        line-height: 1.6;
+        font-weight: 300;
+      }
+
+      .card-link-hint {
+        margin-top: 1rem;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+        color: var(--gold-light);
+        text-transform: uppercase;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .dubai-card:hover .card-link-hint {
+        opacity: 1;
+      }
+
+      /* ── ITINERARY ── */
+      #adventure {
+        border-top: 1px solid rgba(201, 168, 76, 0.1);
+      }
+
+      .timeline {
+        position: relative;
+        margin-top: 4rem;
+        padding-left: 2rem;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          var(--gold) 0%,
+          transparent 100%
+        );
+      }
+
+      .timeline-item {
+        position: relative;
+        padding: 0 0 3.5rem 3rem;
+        opacity: 0;
+        transform: translateX(-20px);
+        transition: all 0.6s ease;
+      }
+      .timeline-item.visible {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .timeline-dot {
+        position: absolute;
+        left: -0.45rem;
+        top: 0.4rem;
+        width: 0.85rem;
+        height: 0.85rem;
+        border-radius: 50%;
+        background: var(--gold);
+        box-shadow: 0 0 12px var(--gold);
+      }
+
+      .timeline-flag {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .timeline-city {
+        font-family: "Playfair Display", serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+      }
+
+      .timeline-detail {
+        color: var(--sand);
+        font-size: 1.05rem;
+        line-height: 1.8;
+        font-weight: 300;
+        margin-top: 0.5rem;
+      }
+
+      .timeline-hotel {
+        display: inline-block;
+        margin-top: 0.8rem;
+        padding: 0.4rem 1rem;
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+        color: var(--gold-light);
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+      .timeline-hotel:hover {
+        background: rgba(201, 168, 76, 0.1);
+        border-color: var(--gold);
+      }
+
+      /* ── ANSWER SECTION ── */
+      #answer {
+        text-align: center;
+        padding: 8rem 2rem;
+      }
+
+      .answer-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.5rem, 7vw, 6rem);
+        font-style: italic;
+        line-height: 1.2;
+        margin-bottom: 1rem;
+      }
+
+      .answer-sub {
+        color: var(--sand);
+        font-size: 1.2rem;
+        font-weight: 300;
+        margin-bottom: 3rem;
+      }
+
+      .answer-buttons {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn-yes {
+        display: inline-block;
+        padding: 1.2rem 3.5rem;
+        background: var(--gold);
+        color: var(--dark);
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        border: none;
+        font-weight: 400;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .btn-yes::after {
+        content: "🥂";
+        position: absolute;
+        right: -2rem;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: right 0.4s ease;
+      }
+      .btn-yes:hover {
+        padding-right: 4.5rem;
+        background: var(--gold-light);
+      }
+      .btn-yes:hover::after {
+        right: 1rem;
+      }
+
+      .btn-no {
+        display: inline-block;
+        padding: 1.2rem 3.5rem;
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        color: var(--sand);
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.9rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        background: none;
+        transition: all 0.3s ease;
+      }
+      .btn-no:hover {
+        border-color: rgba(201, 168, 76, 0.6);
+        color: var(--cream);
+        font-size: 0.01rem;
+        opacity: 0;
+      }
+
+      #yes-message {
+        display: none;
+        margin-top: 3rem;
+        animation: fadeUp 0.8s ease both;
+      }
+      #yes-message.show {
+        display: block;
+      }
+
+      .yes-big {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 5vw, 4rem);
+        color: var(--gold-light);
+        margin-bottom: 1rem;
+      }
+
+      /* ── FOOTER ── */
+      footer {
+        position: relative;
+        z-index: 1;
+        border-top: 1px solid rgba(201, 168, 76, 0.1);
+        padding: 3rem 2rem;
+        text-align: center;
+        font-family: "Josefin Sans", sans-serif;
+        font-size: 0.7rem;
+        letter-spacing: 0.4em;
+        color: rgba(201, 168, 76, 0.4);
+        text-transform: uppercase;
+      }
+
+      /* Animations */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes bob {
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+        50% {
+          transform: translateX(-50%) translateY(10px);
+        }
+      }
+
+      /* Floating gold particles */
+      .particle {
+        position: fixed;
+        border-radius: 50%;
+        background: var(--gold);
+        opacity: 0;
+        pointer-events: none;
+        z-index: 0;
+        animation: particleFloat linear infinite;
+      }
+      @keyframes particleFloat {
+        0% {
+          opacity: 0;
+          transform: translateY(0) rotate(0deg);
+        }
+        10% {
+          opacity: 0.3;
+        }
+        90% {
+          opacity: 0.1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-100vh) rotate(360deg);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .dubai-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Custom cursor -->
+    <div class="cursor" id="cursor">✈️</div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Stars canvas -->
+    <canvas id="stars-canvas"></canvas>
+
+    <!-- ── HERO ── -->
+    <div id="hero">
+      <div class="hero-bg"></div>
+      <div class="plane">✈️</div>
+      <p class="hero-eyebrow">A personal invitation</p>
+      <h1 class="hero-title">Come Fly<br />With <em>Me</em></h1>
+      <p class="hero-sub">First stop: Dubai — then the whole world awaits</p>
+      <div class="hero-cta">
+        <a href="#dubai" class="btn-gold">Begin the Journey ↓</a>
+      </div>
+      <div class="scroll-hint">↓</div>
+    </div>
+
+    <!-- ── DUBAI ── -->
+    <section id="dubai">
+      <p class="section-label">Chapter One</p>
+      <h2 class="section-title">Dubai<br />is Waiting for Us</h2>
+      <div class="divider"></div>
+      <p class="section-body">
+        Imagine waking up above the clouds in the most dazzling city on Earth.
+        Gold-dipped sunsets over the desert, candlelit dinners on the Burj, and
+        adventures that feel like they belong in a movie. All with you.
+      </p>
+
+      <div class="dubai-grid">
+        <a
+          class="dubai-card"
+          href="https://www.armanihoteldubai.com"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="card-emoji">🏙️</div>
+          <div class="card-body">
+            <span class="card-tag">Where We Stay</span>
+            <h3 class="card-title">Armani Hotel Dubai</h3>
+            <p class="card-desc">
+              Designed by Giorgio Armani himself, nestled inside the Burj
+              Khalifa. Waking up here is a statement.
+            </p>
+            <p class="card-link-hint">View Hotel →</p>
+          </div>
+        </a>
+
+        <a
+          class="dubai-card"
+          href="https://www.atlantis.com/dubai/atlantis-the-palm"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="card-emoji">🌴</div>
+          <div class="card-body">
+            <span class="card-tag">The Icon</span>
+            <h3 class="card-title">Atlantis, The Palm</h3>
+            <p class="card-desc">
+              A legendary resort on the Palm Jumeirah with private beaches,
+              water parks, and underwater suites.
+            </p>
+            <p class="card-link-hint">Explore →</p>
+          </div>
+        </a>
+
+        <a
+          class="dubai-card"
+          href="https://www.jumeirah.com/en/hotels-resorts/dubai/burj-al-arab"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="card-emoji">⛵</div>
+          <div class="card-body">
+            <span class="card-tag">The Icon</span>
+            <h3 class="card-title">Burj Al Arab</h3>
+            <p class="card-desc">
+              The world's most iconic hotel. A sail-shaped marvel with butler
+              service, gold interiors, and pure magic.
+            </p>
+            <p class="card-link-hint">Discover →</p>
+          </div>
+        </a>
+
+        <a
+          class="dubai-card clickable"
+          href="https://www.google.com/search?q=Dubai+Desert+Safari"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="card-emoji">🐪</div>
+          <div class="card-body">
+            <span class="card-tag">Adventure</span>
+            <h3 class="card-title">Desert Safari</h3>
+            <p class="card-desc">
+              Dune bashing at sunset, followed by a Bedouin dinner under the
+              stars. Unforgettable doesn't cover it.
+            </p>
+            <p class="card-link-hint">Explore →</p>
+          </div>
+        </a>
+
+        <a
+          class="dubai-card"
+          href="https://www.google.com/search?q=At.mosphere+restaurant+Burj+Khalifa"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="card-emoji">🍾</div>
+          <div class="card-body">
+            <span class="card-tag">Fine Dining</span>
+            <h3 class="card-title">Atmosphere</h3>
+            <p class="card-desc">
+              Dinner at 1,450 feet — the world's highest restaurant, perched
+              inside the Burj Khalifa. Our table awaits.
+            </p>
+            <p class="card-link-hint">Reserve →</p>
+          </div>
+        </a>
+
+        <a
+          class="dubai-card"
+          href="https://www.google.com/search?q=Dubai+Creek+Harbour+sunset"
+          target="_blank"
+          rel="noopener"
+        >
+          <div class="card-emoji">🌅</div>
+          <div class="card-body">
+            <span class="card-tag">Moments</span>
+            <h3 class="card-title">Creek Harbour Sunsets</h3>
+            <p class="card-desc">
+              Golden hour reflections on the water, holding hands while the city
+              glows. These are the moments we'll keep.
+            </p>
+            <p class="card-link-hint">See More →</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ── WORLD ADVENTURE ── -->
+    <section id="adventure">
+      <p class="section-label">Chapter Two &amp; Beyond</p>
+      <h2 class="section-title">Then<br />The World</h2>
+      <div class="divider"></div>
+      <p class="section-body">
+        Dubai is just the beginning. Imagine us writing our story across every
+        continent — each city a new chapter, each sunrise a new reason to be
+        glad we said yes.
+      </p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-flag">🇦🇪</div>
+          <h3 class="timeline-city">Dubai, UAE</h3>
+          <p class="timeline-detail">
+            Golden deserts, glittering towers, and a first chapter written in
+            luxury. This is where it begins.
+          </p>
+          <a
+            class="timeline-hotel"
+            href="https://www.armanihoteldubai.com"
+            target="_blank"
+            >Armani Hotel ↗</a
+          >
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-flag">🇯🇵</div>
+          <h3 class="timeline-city">Tokyo, Japan</h3>
+          <p class="timeline-detail">
+            Neon-lit streets, cherry blossoms, quiet temples, and the best ramen
+            at 2 AM. Pure poetry.
+          </p>
+          <a
+            class="timeline-hotel"
+            href="https://www.aman.com/hotels/aman-tokyo"
+            target="_blank"
+            >Aman Tokyo ↗</a
+          >
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-flag">🇮🇹</div>
+          <h3 class="timeline-city">Amalfi Coast, Italy</h3>
+          <p class="timeline-detail">
+            Cliffside villages, limoncello at dusk, and you across a table
+            draped in white linen.
+          </p>
+          <a
+            class="timeline-hotel"
+            href="https://www.belmond.com/hotels/europe/italy/ravello/belmond-hotel-caruso"
+            target="_blank"
+            >Belmond Caruso ↗</a
+          >
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-flag">🇲🇻</div>
+          <h3 class="timeline-city">Maldives</h3>
+          <p class="timeline-detail">
+            Overwater bungalow. Turquoise infinity. No plan, no schedule — just
+            us and the Indian Ocean.
+          </p>
+          <a
+            class="timeline-hotel"
+            href="https://www.oneandonlyresorts.com/reethi-rah"
+            target="_blank"
+            >One&Only Reethi Rah ↗</a
+          >
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-flag">🇵🇪</div>
+          <h3 class="timeline-city">Machu Picchu, Peru</h3>
+          <p class="timeline-detail">
+            Standing at the edge of the clouds, above an ancient world — some
+            adventures demand you show up in person.
+          </p>
+          <a
+            class="timeline-hotel"
+            href="https://www.belmond.com/hotels/south-america/peru/machu-picchu/belmond-sanctuary-lodge"
+            target="_blank"
+            >Belmond Sanctuary ↗</a
+          >
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-flag">🌍</div>
+          <h3 class="timeline-city">Everywhere Else</h3>
+          <p class="timeline-detail">
+            Morocco, Santorini, Patagonia, Kyoto, New Zealand... The list
+            doesn't end, and neither does the adventure.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── THE QUESTION ── -->
+    <section id="answer">
+      <h2 class="answer-title">So... what<br />do you say?</h2>
+      <p class="answer-sub">
+        One ticket. One adventure. One answer changes everything.
+      </p>
+      <div class="answer-buttons">
+        <button class="btn-yes" onclick="sayYes()">YES, let's go ✈️</button>
+        <button
+          class="btn-no"
+          id="noBtn"
+          onmouseover="runAway(this)"
+          onclick="runAway(this)"
+        >
+          Maybe not...
+        </button>
+      </div>
+
+      <div id="yes-message">
+        <p class="yes-big">She said YES! 🥂🌍</p>
+        <p style="color: var(--sand); font-size: 1.2rem; font-weight: 300">
+          Pack light. Pack your passport. The adventure starts now.
+        </p>
+      </div>
+    </section>
+
+    <footer>Made with ♡ &nbsp;·&nbsp; The World is Ours to Explore</footer>
+
+    <script>
+      // ── Airplane cursor that rotates based on movement direction
+      const cursor = document.getElementById("cursor");
+      const ring = document.getElementById("cursorRing");
+      let mx = 0,
+        my = 0,
+        px = 0,
+        py = 0;
+      let angle = 0,
+        targetAngle = 0;
+
+      document.addEventListener("mousemove", (e) => {
+        const dx = e.clientX - mx;
+        const dy = e.clientY - my;
+        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+          // ✈️ default points right (0°), so we rotate relative to that
+          targetAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+        }
+        mx = e.clientX;
+        my = e.clientY;
+      });
+
+      function animCursor() {
+        // Smooth angle interpolation (handle wrap-around)
+        let diff = targetAngle - angle;
+        if (diff > 180) diff -= 360;
+        if (diff < -180) diff += 360;
+        angle += diff * 0.15;
+
+        cursor.style.left = mx - 12 + "px";
+        cursor.style.top = my - 12 + "px";
+        cursor.style.transform = `rotate(${angle}deg)`;
+        requestAnimationFrame(animCursor);
+      }
+      animCursor();
+
+      // ── Stars
+      const canvas = document.getElementById("stars-canvas");
+      const ctx = canvas.getContext("2d");
+      let stars = [];
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        stars = [];
+        for (let i = 0; i < 200; i++) {
+          stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            r: Math.random() * 1.4,
+            o: Math.random(),
+            speed: Math.random() * 0.005 + 0.002,
+          });
+        }
+      }
+      resizeCanvas();
+      window.addEventListener("resize", resizeCanvas);
+
+      function drawStars(t) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach((s) => {
+          const alpha = 0.3 + 0.7 * Math.abs(Math.sin(t * s.speed + s.o * 100));
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(201,168,76,${alpha * 0.6})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(drawStars);
+      }
+      requestAnimationFrame(drawStars);
+
+      // ── Intersection Observer for timeline
+      const items = document.querySelectorAll(".timeline-item");
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) e.target.classList.add("visible");
+          });
+        },
+        { threshold: 0.2 },
+      );
+      items.forEach((i) => obs.observe(i));
+
+      // ── Floating gold particles on click
+      document.addEventListener("click", (e) => {
+        for (let i = 0; i < 8; i++) {
+          const p = document.createElement("div");
+          p.className = "particle";
+          const sz = Math.random() * 6 + 3;
+          p.style.cssText = `
+          width:${sz}px; height:${sz}px;
+          left:${e.clientX + (Math.random() - 0.5) * 40}px;
+          top:${e.clientY}px;
+          animation-duration:${Math.random() * 2 + 2}s;
+          animation-name:particleFloat;
+        `;
+          document.body.appendChild(p);
+          setTimeout(() => p.remove(), 4000);
+        }
+      });
+
+      // ── Yes / No
+      function sayYes() {
+        document.querySelector(".answer-buttons").style.display = "none";
+        const msg = document.getElementById("yes-message");
+        msg.classList.add("show");
+        // Confetti-style burst
+        for (let i = 0; i < 40; i++) {
+          setTimeout(() => {
+            const p = document.createElement("div");
+            p.className = "particle";
+            const sz = Math.random() * 8 + 4;
+            p.style.cssText = `
+            width:${sz}px; height:${sz}px;
+            left:${Math.random() * window.innerWidth}px;
+            top:${window.innerHeight}px;
+            animation-duration:${Math.random() * 3 + 2}s;
+            animation-name:particleFloat;
+          `;
+            document.body.appendChild(p);
+            setTimeout(() => p.remove(), 5000);
+          }, i * 60);
+        }
+      }
+
+      let noPos = { x: null, y: null };
+      function runAway(btn) {
+        const vw = window.innerWidth,
+          vh = window.innerHeight;
+        const x = Math.random() * (vw - 150);
+        const y = Math.random() * (vh - 60);
+        btn.style.position = "fixed";
+        btn.style.left = x + "px";
+        btn.style.top = y + "px";
+        btn.style.zIndex = 1000;
+        btn.style.transition = "left 0.3s ease, top 0.3s ease";
+      }
+    </script>
+  </body>
+</html>
